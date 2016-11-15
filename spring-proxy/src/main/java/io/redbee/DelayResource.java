@@ -37,8 +37,8 @@ public class DelayResource {
 
     private ClientHttpRequestFactory clientHttpRequestFactory() {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-        factory.setReadTimeout(2000);
-        factory.setConnectTimeout(2000);
+        factory.setReadTimeout(5000);
+        factory.setConnectTimeout(5000);
         return factory;
     }
 

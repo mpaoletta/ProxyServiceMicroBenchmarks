@@ -39,7 +39,7 @@ class HomeController @Inject() (ws: WSClient, conf: Configuration)(implicit ec: 
 
     val url = conf.getString("backend.url").getOrElse("http://localhost:9000/delay/") + millis + "/" + percentage
 
-    ws.url(url).withRequestTimeout(2 seconds).get.map { response =>
+    ws.url(url).withRequestTimeout(5 seconds).get.map { response =>
       Ok(response.body)
     }
 

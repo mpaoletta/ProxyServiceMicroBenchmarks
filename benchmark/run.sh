@@ -3,11 +3,13 @@
 import scala.sys.process._
 import java.io.File
 
-val reportName = args(0)
+val reportName = sys.env("GATLING_PROTOCOL")+"-"+sys.env("GATLING_USERS")+"-"+sys.env("GATLING_DELAY")+"-"+sys.env("GATLING_REPETITIONS")+"-"+sys.env("GATLING_SCENARIO")
+
+println("Ejecutando " + reportName)
 
 val gatlingPath = sys.env.get("GATLING_HOME").getOrElse(throw new Exception("No esta definida GATLING_HOME")) + "/bin/gatling.sh"
 
-val cmd = s"$gatlingPath -s io.redbee.proxytest.ProxyTest -m -rf /tmp/proxy2"
+val cmd = s"$gatlingPath -s io.redbee.proxytest.ProxyTest -m -rf /tmp/proxy-reports -sf ./src"
 
 var buffer = new StringBuffer()
 val processLogger = ProcessLogger(line => {

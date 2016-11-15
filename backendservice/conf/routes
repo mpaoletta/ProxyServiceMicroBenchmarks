@@ -13,3 +13,5 @@ GET     /message                    controllers.AsyncController.message
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 GET     /delay/:millis              controllers.HomeController.delayedEcho(millis: Long)
+
+GET     /delay/:millis/:percentage  controllers.HomeController.echoWithRandomDelay(millis: Long, percentage: Int)

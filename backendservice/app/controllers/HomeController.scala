@@ -37,11 +37,16 @@ class HomeController @Inject() (actorSystem: ActorSystem)(implicit exec: Executi
     getFutureMessage(delay milliseconds).map { msg => Ok(msg) }
   }
 
+  def echoWithRandomDelay(baseDelay: Long, percentage: Int) = {
+    val randomDrift = ((rand.nextInt(percentage)-(percentage/2)).toFloat/100)+1
+    println(randomDrift)
+    delayedEcho((baseDelay * randomDrift).toInt)
+  }
 
   private def getFutureMessage(delayTime: FiniteDuration): Future[String] = {
     val promise: Promise[String] = Promise[String]()
     actorSystem.scheduler.scheduleOnce(delayTime) {
-      promise.success(holas(rand.nextInt(holas.length)))
+      promise.success(holas(rand.nextInt(holas.length)) + " - " + delayTime)
     }
     promise.future
   }

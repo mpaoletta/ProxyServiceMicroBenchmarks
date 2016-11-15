@@ -5,7 +5,7 @@ import javax.inject._
 import play.api._
 import play.api.libs.ws.WSClient
 import play.api.mvc._
-
+import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
 
 /**
@@ -25,11 +25,21 @@ class HomeController @Inject() (ws: WSClient, conf: Configuration)(implicit ec: 
     Ok(views.html.index("Your new application is ready."))
   }
 
-  def callBackend(millis: Long) = Action.async {implicit request =>
+  def delayedEcho(millis: Long) = Action.async {implicit request =>
 
     val url = conf.getString("backend.url").getOrElse("http://localhost:9000/delay/") + millis
 
-    ws.url(url).get.map { response =>
+    ws.url(url).withRequestTimeout(2 seconds).get.map { response =>
+      Ok(response.body)
+    }
+
+  }
+
+  def echoWithRandomDelay(millis: Long, percentage: Int) = Action.async {implicit request =>
+
+    val url = conf.getString("backend.url").getOrElse("http://localhost:9000/delay/") + millis + "/" + percentage
+
+    ws.url(url).withRequestTimeout(2 seconds).get.map { response =>
       Ok(response.body)
     }
 
